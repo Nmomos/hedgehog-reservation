@@ -11,15 +11,13 @@
 <p align="center">
     <img
         src="https://img.shields.io/badge/serialization-WIP-blue.svg?style=for-the-badge"
-        alt="staging-status"
     />
     <a
-        href="https://nmomos.com/tips/2021/01/23/fastapi-docker-2/"
+        href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/"
         target="_blank"
     >
         <img
-            src="https://img.shields.io/badge/newest-Part--2-orange.svg?style=for-the-badge"
-            alt="staging-status"
+            src="https://img.shields.io/badge/newest-Part--3-orange.svg?style=for-the-badge"
         />
     </a>
 </p>
@@ -32,6 +30,8 @@
 **その1**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-1/" target="_blank">FastAPIとDockerでHelloWorld</a>
 
 **その2**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-2/" target="_blank">AlembicとPostgreSQLでDB Migrate</a>
+
+**その3**: <a href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/" target="_blank">APIエンドポイントをPostgreSQLに接続</a>
 
 ---
 
