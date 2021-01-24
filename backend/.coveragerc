@@ -1,0 +1,6 @@
+[run]
+branch = True
+omit = tests/*
+
+[html]
+title = Hedgehog Reservation API Coverage report

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./title.png" alt="FastAPI">
+  <img src=".github/title.png" alt="FastAPI">
 </p>
 
 <p align="center">
@@ -13,25 +13,27 @@
         src="https://img.shields.io/badge/serialization-WIP-blue.svg?style=for-the-badge"
     />
     <a
-        href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/"
+        href="https://nmomos.com/tips/2021/01/25/fastapi-docker-4/"
         target="_blank"
     >
         <img
-            src="https://img.shields.io/badge/newest-Part--3-orange.svg?style=for-the-badge"
+            src="https://img.shields.io/badge/newest-Part--4-orange.svg?style=for-the-badge"
         />
     </a>
 </p>
 
 # hedgehog-reservation
 
-このリポジトリは 「FastAPI を使ってWEBアプリを作ってみる」 シリーズで作成したソースコードのサンプルです。
+このリポジトリは 「FastAPI を使って WEB アプリを作ってみる」 シリーズで作成したソースコードのサンプルです。
 該当のページはココで発見できます:
 
-**その1**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-1/" target="_blank">FastAPIとDockerでHelloWorld</a>
+**その 1**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-1/" target="_blank">FastAPI と Docker で HelloWorld</a>
 
-**その2**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-2/" target="_blank">AlembicとPostgreSQLでDB Migrate</a>
+**その 2**: <a href="https://nmomos.com/tips/2021/01/23/fastapi-docker-2/" target="_blank">Alembic と PostgreSQL で DB Migrate</a>
 
-**その3**: <a href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/" target="_blank">APIエンドポイントをPostgreSQLに接続</a>
+**その 3**: <a href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/" target="_blank">API エンドポイントを PostgreSQL に接続</a>
+
+**その 4**: <a href="https://nmomos.com/tips/2021/01/25/fastapi-docker-4/" target="_blank">Pytest と Docker でテスト構築</a>
 
 ---
 
@@ -65,14 +67,22 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
-## API Documentへのアクセス
+テストの実行
+
+```bash
+$ docker-compose exec server pytest -vv
+```
+
+---
+
+## API Document へのアクセス
 
 **Swagger:**
 <a href="http://localhost:8000/docs" target="_blank">
-    http://localhost:8000/docs
+http://localhost:8000/docs
 </a>
 
 **Redoc:**
 <a href="http://localhost:8000/docs" target="_blank">
-    http://localhost:8000/redoc
+http://localhost:8000/redoc
 </a>

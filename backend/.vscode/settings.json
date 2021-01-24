@@ -1,3 +1,25 @@
 {
-    "python.pythonPath": "/usr/local/bin/python"
+    "python.pythonPath": "/usr/local/bin/python",
+
+    // Setting up Python for unit testing
+    "python.testing.pytestArgs": ["tests"],
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": true,
+
+    // Setting up Python for linter
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--ignore=E226, E302, E41, W503",
+        "--max-line-length=88",
+        "--exclude=.git, __pycache__, __init__.py, .mypy_cache, .pytest_cache, venv"
+    ],
+
+    "python.formatting.autopep8Args": [
+        "--max-line-length", "88",
+        "--experimental",
+        "--aggressive",
+        "--aggressive",
+    ],
 }
