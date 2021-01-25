@@ -5,11 +5,10 @@
 
 version: 2
 updates:
-  - package-ecosystem: pip # See documentation for possible values
-    directory: "/backend" # Location of package manifests
+  - package-ecosystem: pip
+    directory: "/backend"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 15
-    reviewers:
-　　 - mila411
-      
+    reviewers: 
+      - mila411
