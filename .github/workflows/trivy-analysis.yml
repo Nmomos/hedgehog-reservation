@@ -2,7 +2,10 @@ name: build
 on:
   push:
     branches: [ master ]
+    paths: backend/**/*
   pull_request:
+    paths: backend/**/*
+  
 jobs:
   build:
     name: Build
