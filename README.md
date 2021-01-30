@@ -24,6 +24,8 @@
 
 # hedgehog-reservation
 
+[![CodeFactor](https://www.codefactor.io/repository/github/nmomos/hedgehog-reservation/badge)](https://www.codefactor.io/repository/github/nmomos/hedgehog-reservation)
+
 このリポジトリは 「FastAPI を使って WEB アプリを作ってみる」 シリーズで作成したソースコードのサンプルです。
 該当のページはココで発見できます:
 
