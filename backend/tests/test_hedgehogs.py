@@ -146,7 +146,7 @@ class TestUpdateHedgehog:
         updated_hedgehog = HedgehogInDB(**res.json())
         assert updated_hedgehog.id == test_hedgehog.id
 
-        for i in range(len(attrs_to_change)):
+        for i, item in enumerate(attrs_to_change):
             assert getattr(
                 updated_hedgehog,
                 attrs_to_change[i]) != getattr(
