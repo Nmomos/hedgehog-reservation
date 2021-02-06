@@ -1,6 +1,6 @@
 [run]
 branch = True
-omit = tests/*
+omit = tests/*, app/db/migrations/env.py, app/db/migrations/versions/*
 
 [html]
 title = Hedgehog Reservation API Coverage report

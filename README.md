@@ -13,18 +13,16 @@
         src="https://img.shields.io/badge/serialization-WIP-blue.svg?style=for-the-badge"
     />
     <a
-        href="https://nmomos.com/tips/2021/01/25/fastapi-docker-4/"
+        href="https://nmomos.com/tips/2021/02/06/fastapi-docker-5/"
         target="_blank"
     >
         <img
-            src="https://img.shields.io/badge/newest-Part--4-orange.svg?style=for-the-badge"
+            src="https://img.shields.io/badge/newest-Part--5-orange.svg?style=for-the-badge"
         />
     </a>
 </p>
 
 # hedgehog-reservation
-
-[![CodeFactor](https://www.codefactor.io/repository/github/nmomos/hedgehog-reservation/badge)](https://www.codefactor.io/repository/github/nmomos/hedgehog-reservation)
 
 このリポジトリは 「FastAPI を使って WEB アプリを作ってみる」 シリーズで作成したソースコードのサンプルです。
 該当のページはココで発見できます:
@@ -36,6 +34,8 @@
 **その 3**: <a href="https://nmomos.com/tips/2021/01/24/fastapi-docker-3/" target="_blank">API エンドポイントを PostgreSQL に接続</a>
 
 **その 4**: <a href="https://nmomos.com/tips/2021/01/25/fastapi-docker-4/" target="_blank">Pytest と Docker でテスト構築</a>
+
+**その 5**: <a href="https://nmomos.com/tips/2021/02/06/fastapi-docker-5/" target="_blank">FastAPI でリソース管理エンドポイントを作成</a>
 
 ---
 

@@ -11,9 +11,6 @@ class ColorType(str, Enum):
 
 
 class HedgehogBase(CoreModel):
-    """
-    All common characteristics of our Cleaning resource
-    """
     name: Optional[str]
     description: Optional[str]
     age: Optional[float]
@@ -26,8 +23,7 @@ class HedgehogCreate(HedgehogBase):
 
 
 class HedgehogUpdate(HedgehogBase):
-    description: str
-    age: float
+    color_type: Optional[ColorType]
 
 
 class HedgehogInDB(IDModelMixin, HedgehogBase):
