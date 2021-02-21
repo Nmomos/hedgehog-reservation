@@ -13,11 +13,11 @@
         src="https://img.shields.io/badge/serialization-WIP-blue.svg?style=for-the-badge"
     />
     <a
-        href="https://nmomos.com/tips/2021/02/21/fastapi-docker-6/"
+        href="https://nmomos.com/tips/2021/02/21/fastapi-docker-7/"
         target="_blank"
     >
         <img
-            src="https://img.shields.io/badge/newest-Part--6-orange.svg?style=for-the-badge"
+            src="https://img.shields.io/badge/newest-Part--7-orange.svg?style=for-the-badge"
         />
     </a>
 </p>
@@ -37,7 +37,9 @@
 
 **その 5**: <a href="https://nmomos.com/tips/2021/02/06/fastapi-docker-5/" target="_blank">FastAPI でリソース管理エンドポイントを作成</a>
 
-**その 6**: <a href="https://nmomos.com/tips/2021/02/06/fastapi-docker-5/" target="_blank">ユーザーモデルの実装</a>
+**その 6**: <a href="https://nmomos.com/tips/2021/02/21/fastapi-docker-6/" target="_blank">ユーザーモデルの実装</a>
+
+**その 7**: <a href="https://nmomos.com/tips/2021/02/21/fastapi-docker-7/" target="_blank">JWTトークンの実装</a>
 
 ---
 
