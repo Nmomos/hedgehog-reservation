@@ -1,15 +1,8 @@
-import string
 from typing import Optional
 
 from app.models.core import CoreModel, DateTimeModelMixin, IDModelMixin
+from app.models.token import AccessToken
 from pydantic import EmailStr, constr
-
-
-def validate_username(username: str) -> str:
-    allowed = string.ascii_letters + string.digits + "-" + "_"
-    assert all(char in allowed for char in username), "ユーザー名に無効な文字が含まれています。"
-    assert len(username) >= 3, "ユーザー名は3文字以上で入力してください。"
-    return username
 
 
 class UserBase(CoreModel):
@@ -42,4 +35,4 @@ class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
 
 
 class UserPublic(IDModelMixin, DateTimeModelMixin, UserBase):
-    pass
+    access_token: Optional[AccessToken]
