@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Optional
 
 import bcrypt
 import jwt
@@ -6,7 +7,9 @@ from app.core.config import (ACCESS_TOKEN_EXPIRE_MINUTES, JWT_ALGORITHM,
                              JWT_AUDIENCE, JWT_TOKEN_PREFIX, SECRET_KEY)
 from app.models.token import JWTCreds, JWTMeta, JWTPayload
 from app.models.user import UserInDB, UserPasswordUpdate
+from fastapi import HTTPException, status
 from passlib.context import CryptContext
+from pydantic import ValidationError
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -62,3 +65,19 @@ class AuthService:
         )
 
         return access_token
+
+    def get_username_from_token(self, *, token: str, secret_key: str) -> Optional[str]:
+        try:
+            decoded_token = jwt.decode(
+                token,
+                str(secret_key),
+                audience=JWT_AUDIENCE,
+                algorithms=[JWT_ALGORITHM])
+            payload = JWTPayload(**decoded_token)
+        except (jwt.PyJWTError, ValidationError):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate token credentials.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return payload.username
