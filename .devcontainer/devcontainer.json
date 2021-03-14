@@ -45,7 +45,7 @@
 	// "shutdownAction": "none",
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-    "postCreateCommand": "apk update && apk add curl git && pip install -r requirements.txt && pip install pytest pytest-cov flake8 autopep8",
+    "postCreateCommand": "apk update && apk add curl git gcc musl-dev && pip install -r requirements.txt && pip install pytest pytest-cov flake8 autopep8 black",
 
 	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"

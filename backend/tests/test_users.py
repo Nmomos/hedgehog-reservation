@@ -6,7 +6,7 @@ from app.core.config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     JWT_ALGORITHM,
     JWT_AUDIENCE,
-    SECRET_KEY
+    SECRET_KEY,
 )
 from app.db.repositories.users import UsersRepository
 from app.models.user import UserInDB, UserPublic
@@ -17,7 +17,10 @@ from httpx import AsyncClient
 from pydantic import ValidationError
 from starlette.datastructures import Secret
 from starlette.status import (
-    HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_401_UNAUTHORIZED
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_404_NOT_FOUND,
+    HTTP_401_UNAUTHORIZED,
 )
 
 pytestmark = pytest.mark.asyncio
@@ -28,37 +31,46 @@ class TestUserRoutes:
         new_user = {
             "email": "test@email.io",
             "username": "test_username",
-            "password": "testpassword"}
+            "password": "testpassword",
+        }
         res = await client.post(
-            app.url_path_for("users:register-new-user"),
-            json={"new_user": new_user})
+            app.url_path_for("users:register-new-user"), json={"new_user": new_user}
+        )
         assert res.status_code != HTTP_404_NOT_FOUND
 
 
 class TestUserRegistration:
     async def test_users_can_register_successfully(
-        self, app: FastAPI, client: AsyncClient, db: Database,
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        db: Database,
     ) -> None:
         user_repo = UsersRepository(db)
         new_user = {
             "email": "foo@bar.com",
             "username": "foobar",
-            "password": "bazquxquux"}
+            "password": "bazquxquux",
+        }
 
         user_in_db = await user_repo.get_user_by_email(email=new_user["email"])
         assert user_in_db is None
 
         res = await client.post(
-            app.url_path_for("users:register-new-user"),
-            json={"new_user": new_user})
+            app.url_path_for("users:register-new-user"), json={"new_user": new_user}
+        )
         assert res.status_code == HTTP_201_CREATED
 
-        user_in_db = await user_repo.get_user_by_email(email=new_user["email"])
+        user_in_db = await user_repo.get_user_by_email(
+            email=new_user["email"], populate=False
+        )
         assert user_in_db is not None
         assert user_in_db.email == new_user["email"]
         assert user_in_db.username == new_user["username"]
 
-        created_user = UserPublic(**res.json()).dict(exclude={"access_token"})
+        created_user = UserPublic(**res.json()).dict(
+            exclude={"access_token", "profile"}
+        )
         assert created_user == user_in_db.dict(exclude={"password", "salt"})
 
     @pytest.mark.parametrize(
@@ -83,12 +95,13 @@ class TestUserRegistration:
         new_user = {
             "email": "nottaken@email.com",
             "username": "not_taken_username",
-            "password": "foobarpassword"}
+            "password": "foobarpassword",
+        }
         new_user[attr] = value
 
         res = await client.post(
-            app.url_path_for("users:register-new-user"),
-            json={"new_user": new_user})
+            app.url_path_for("users:register-new-user"), json={"new_user": new_user}
+        )
         assert res.status_code == status_code
 
     async def test_users_saved_password_is_hashed_and_has_salt(
@@ -101,14 +114,17 @@ class TestUserRegistration:
         new_user = {
             "email": "nmomo@mail.com",
             "username": "nmomo",
-            "password": "nmomoishedgehog"}
+            "password": "nmomoishedgehog",
+        }
 
         res = await client.post(
-            app.url_path_for("users:register-new-user"),
-            json={"new_user": new_user})
+            app.url_path_for("users:register-new-user"), json={"new_user": new_user}
+        )
         assert res.status_code == HTTP_201_CREATED
 
-        user_in_db = await user_repo.get_user_by_email(email=new_user["email"])
+        user_in_db = await user_repo.get_user_by_email(
+            email=new_user["email"], populate=False
+        )
         assert user_in_db is not None
         assert user_in_db.salt is not None and user_in_db.salt != "123"
         assert user_in_db.password != new_user["password"]
@@ -133,7 +149,8 @@ class TestAuthTokens:
             access_token,
             str(SECRET_KEY),
             audience=JWT_AUDIENCE,
-            algorithms=[JWT_ALGORITHM])
+            algorithms=[JWT_ALGORITHM],
+        )
         assert creds.get("username") is not None
         assert creds["username"] == test_user.username
         assert creds["aud"] == JWT_AUDIENCE
@@ -152,7 +169,8 @@ class TestAuthTokens:
                 access_token,
                 str(SECRET_KEY),
                 audience=JWT_AUDIENCE,
-                algorithms=[JWT_ALGORITHM])
+                algorithms=[JWT_ALGORITHM],
+            )
 
     @pytest.mark.parametrize(
         "secret_key, jwt_audience, exception",
@@ -161,7 +179,7 @@ class TestAuthTokens:
             (None, JWT_AUDIENCE, jwt.InvalidSignatureError),
             (SECRET_KEY, "othersite:auth", jwt.InvalidAudienceError),
             (SECRET_KEY, None, ValidationError),
-        )
+        ),
     )
     async def test_invalid_token_content_raises_error(
         self,
@@ -183,12 +201,16 @@ class TestAuthTokens:
                 access_token,
                 str(SECRET_KEY),
                 audience=JWT_AUDIENCE,
-                algorithms=[JWT_ALGORITHM])
+                algorithms=[JWT_ALGORITHM],
+            )
 
 
 class TestUserLogin:
     async def test_user_can_login_successfully_and_receives_valid_token(
-        self, app: FastAPI, client: AsyncClient, test_user: UserInDB,
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        test_user: UserInDB,
     ) -> None:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
         login_data = {
@@ -201,10 +223,8 @@ class TestUserLogin:
         assert res.status_code == HTTP_200_OK
         token = res.json().get("access_token")
         creds = jwt.decode(
-            token,
-            str(SECRET_KEY),
-            audience=JWT_AUDIENCE,
-            algorithms=[JWT_ALGORITHM])
+            token, str(SECRET_KEY), audience=JWT_AUDIENCE, algorithms=[JWT_ALGORITHM]
+        )
         assert "username" in creds
         assert creds["username"] == test_user.username
         assert "sub" in creds
@@ -263,8 +283,8 @@ class TestUserLogin:
             (SECRET_KEY, "asdf"),
             (SECRET_KEY, ""),
             (SECRET_KEY, None),
-            ("ABC123", "use correct token")
-        )
+            ("ABC123", "use correct token"),
+        ),
     )
     async def test_error_when_token_or_secret_is_wrong(
         self,
@@ -275,19 +295,24 @@ class TestUserLogin:
         wrong_token: Optional[str],
     ) -> None:
         token = auth_service.create_access_token_for_user(
-            user=test_user, secret_key=str(SECRET_KEY))
+            user=test_user, secret_key=str(SECRET_KEY)
+        )
 
         if wrong_token == "use correct token":
             wrong_token = token
 
         with pytest.raises(HTTPException):
             username = auth_service.get_username_from_token(
-                token=wrong_token, secret_key=str(secret))
+                token=wrong_token, secret_key=str(secret)
+            )
 
 
 class TestUserMe:
     async def test_authenticated_user_can_retrieve_own_data(
-        self, app: FastAPI, authorized_client: AsyncClient, test_user: UserInDB,
+        self,
+        app: FastAPI,
+        authorized_client: AsyncClient,
+        test_user: UserInDB,
     ) -> None:
         res = await authorized_client.get(app.url_path_for("users:get-current-user"))
         assert res.status_code == HTTP_200_OK
@@ -297,28 +322,29 @@ class TestUserMe:
         assert user.id == test_user.id
 
     async def test_user_cannot_access_own_data_if_not_authenticated(
-        self, app: FastAPI, client: AsyncClient, test_user: UserInDB,
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        test_user: UserInDB,
     ) -> None:
         res = await client.get(app.url_path_for("users:get-current-user"))
         assert res.status_code == HTTP_401_UNAUTHORIZED
 
     @pytest.mark.parametrize(
-        "jwt_prefix",
-        (
-            ("",),
-            ("value",),
-            ("Token",),
-            ("JWT",),
-            ("Swearer",)
-        )
+        "jwt_prefix", (("",), ("value",), ("Token",), ("JWT",), ("Swearer",))
     )
     async def test_user_cannot_access_own_data_with_incorrect_jwt_prefix(
-        self, app: FastAPI, client: AsyncClient, test_user: UserInDB, jwt_prefix: str,
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        test_user: UserInDB,
+        jwt_prefix: str,
     ) -> None:
         token = auth_service.create_access_token_for_user(
-            user=test_user, secret_key=str(SECRET_KEY))
+            user=test_user, secret_key=str(SECRET_KEY)
+        )
         res = await client.get(
             app.url_path_for("users:get-current-user"),
-            headers={"Authorization": f"{jwt_prefix} {token}"}
+            headers={"Authorization": f"{jwt_prefix} {token}"},
         )
         assert res.status_code == HTTP_401_UNAUTHORIZED
