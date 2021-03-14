@@ -44,31 +44,31 @@ def postgres_container(docker: pydocker.APIClient) -> None:
     # create the new container using
     # the same image used by our database
     command = """head -1 /proc/self/cgroup|cut -d/ -f3"""
-    bin_own_container_id = subprocess.check_output(['sh', '-c', command])
-    own_container_id = bin_own_container_id.decode().replace('\n', '')
+    bin_own_container_id = subprocess.check_output(["sh", "-c", command])
+    own_container_id = bin_own_container_id.decode().replace("\n", "")
     inspection = docker.inspect_container(own_container_id)
 
     network = list(inspection["NetworkSettings"]["Networks"].keys())[0]
-    networking_config = docker.create_networking_config({
-        network: docker.create_endpoint_config()
-    })
+    networking_config = docker.create_networking_config(
+        {network: docker.create_endpoint_config()}
+    )
 
     container_name = f"test-postgres-{uuid.uuid4()}"
     container = docker.create_container(
         image=image,
         name=container_name,
         detach=True,
-        networking_config=networking_config
+        networking_config=networking_config,
     )
     docker.start(container=container["Id"])
 
     inspection = docker.inspect_container(container["Id"])
-    ip_address = inspection['NetworkSettings']['Networks'][network]['IPAddress']
+    ip_address = inspection["NetworkSettings"]["Networks"][network]["IPAddress"]
     dsn = f"postgresql://postgres:postgres@{ip_address}/postgres"
 
     try:
         ping_postgres(dsn)
-        os.environ['CONTAINER_DSN'] = dsn
+        os.environ["CONTAINER_DSN"] = dsn
         alembic.command.upgrade(config, "head")
         yield container
     finally:
@@ -79,6 +79,7 @@ def postgres_container(docker: pydocker.APIClient) -> None:
 @pytest.fixture
 def app() -> FastAPI:
     from app.api.server import get_application
+
     return get_application()
 
 
@@ -93,7 +94,7 @@ async def client(app: FastAPI) -> AsyncClient:
         async with AsyncClient(
             app=app,
             base_url="http://testserver",
-            headers={"Content-Type": "application/json"}
+            headers={"Content-Type": "application/json"},
         ) as client:
             yield client
 
@@ -127,9 +128,24 @@ async def test_user(db: Database) -> UserInDB:
 @pytest.fixture
 def authorized_client(client: AsyncClient, test_user: UserInDB) -> AsyncClient:
     access_token = auth_service.create_access_token_for_user(
-        user=test_user, secret_key=str(SECRET_KEY))
+        user=test_user, secret_key=str(SECRET_KEY)
+    )
     client.headers = {
         **client.headers,
         "Authorization": f"{JWT_TOKEN_PREFIX} {access_token}",
     }
     return client
+
+
+@pytest.fixture
+async def test_user2(db: Database) -> UserInDB:
+    new_user = UserCreate(
+        email="nmomos2@mail.com",
+        username="nmomoishedgehog2",
+        password="nmomosissocute2",
+    )
+    user_repo = UsersRepository(db)
+    existing_user = await user_repo.get_user_by_email(email=new_user.email)
+    if existing_user:
+        return existing_user
+    return await user_repo.register_new_user(new_user=new_user)
