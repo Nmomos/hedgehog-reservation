@@ -6,7 +6,7 @@ python-multipart==0.0.5
 
 databases[postgresql]==0.4.2
 SQLAlchemy==1.4.1
-alembic==1.5.7
+alembic==1.5.8
 psycopg2==2.8.6
 
 pyjwt==2.0.1
