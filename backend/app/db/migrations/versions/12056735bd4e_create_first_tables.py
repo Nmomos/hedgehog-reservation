@@ -60,6 +60,7 @@ def create_hedgehogs_table() -> None:
         sa.Column("description", sa.Text, nullable=True),
         sa.Column("color_type", sa.Text, nullable=False),
         sa.Column("age", sa.Numeric(10, 2), nullable=False),
+        sa.Column("owner", sa.Integer, sa.ForeignKey("users.id", ondelete="CASCADE")),
         *timestamps(),
     )
     op.execute(
@@ -121,13 +122,13 @@ def create_profiles_table() -> None:
 
 def upgrade() -> None:
     create_updated_at_trigger()
-    create_hedgehogs_table()
     create_users_table()
     create_profiles_table()
+    create_hedgehogs_table()
 
 
 def downgrade() -> None:
+    op.drop_table("hedgehogs")
     op.drop_table("profiles")
     op.drop_table("users")
-    op.drop_table("hedgehogs")
     op.execute("DROP FUNCTION update_updated_at_column")

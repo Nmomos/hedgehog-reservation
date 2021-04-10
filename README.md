@@ -13,11 +13,11 @@
         src="https://img.shields.io/badge/serialization-WIP-blue.svg?style=for-the-badge"
     />
     <a
-        href="https://nmomos.com/tips/2021/03/14/fastapi-docker-9/"
+        href="https://nmomos.com/tips/2021/04/11/fastapi-docker-10/"
         target="_blank"
     >
         <img
-            src="https://img.shields.io/badge/newest-Part--9-orange.svg?style=for-the-badge"
+            src="https://img.shields.io/badge/newest-Part--10-orange.svg?style=for-the-badge"
         />
     </a>
 </p>
@@ -44,6 +44,8 @@
 **その 8**: <a href="https://nmomos.com/tips/2021/03/07/fastapi-docker-8/" target="_blank">認証機能のDependencies化</a>
 
 **その 9**: <a href="https://nmomos.com/tips/2021/03/14/fastapi-docker-9/" target="_blank">UserProfileの実装とアタッチ</a>
+
+**その 10**: <a href="https://nmomos.com/tips/2021/04/11/fastapi-docker-10/" target="_blank">ハリネズミリソースのリファクタリング</a>
 
 ---
 
