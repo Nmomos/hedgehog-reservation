@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 
-from app.models.core import CoreModel, IDModelMixin
+from app.models.core import CoreModel, DateTimeModelMixin, IDModelMixin
+from app.models.user import UserPublic
 
 
 class ColorType(str, Enum):
@@ -26,11 +27,12 @@ class HedgehogUpdate(HedgehogBase):
     color_type: Optional[ColorType]
 
 
-class HedgehogInDB(IDModelMixin, HedgehogBase):
+class HedgehogInDB(IDModelMixin, DateTimeModelMixin, HedgehogBase):
     name: str
     age: float
     color_type: ColorType
+    owner: int
 
 
-class HedgehogPublic(IDModelMixin, HedgehogBase):
-    pass
+class HedgehogPublic(IDModelMixin, DateTimeModelMixin, HedgehogBase):
+    owner: Union[int, UserPublic]

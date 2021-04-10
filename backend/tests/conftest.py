@@ -100,7 +100,7 @@ async def client(app: FastAPI) -> AsyncClient:
 
 
 @pytest.fixture
-async def test_hedgehog(db: Database) -> HedgehogInDB:
+async def test_hedgehog(db: Database, test_user: UserInDB) -> HedgehogInDB:
     hedgehog_repo = HedgehogsRepository(db)
     new_hedgehog = HedgehogCreate(
         name="fake hedgehog name",
@@ -108,7 +108,9 @@ async def test_hedgehog(db: Database) -> HedgehogInDB:
         age=2.2,
         color_type="SOLT & PEPPER",
     )
-    return await hedgehog_repo.create_hedgehog(new_hedgehog=new_hedgehog)
+    return await hedgehog_repo.create_hedgehog(
+        new_hedgehog=new_hedgehog, requesting_user=test_user
+    )
 
 
 @pytest.fixture
