@@ -1,4 +1,4 @@
-fastapi==0.66.1
+fastapi==0.67.0
 uvicorn==0.14.0
 pydantic==1.8.2
 email-validator==1.1.3
